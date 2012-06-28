@@ -35,7 +35,8 @@ module ActionView
         def self.expand_t(source)
           source.gsub(/<%t([\s\S]+?)%>/) { |match|
             term = $1.strip.split('-')
-            I18n.t(term[0], term[1])
+            hash = !term[1].nil? ? eval(term[1]) : nil
+            I18n.t(term[0], hash)
           }
         end
       end
