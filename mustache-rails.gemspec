@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name    = "mustache-rails"
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.homepage = "https://github.com/josh/mustache-rails"
   s.summary  = "Mustache Rails adapter"
