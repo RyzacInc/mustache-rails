@@ -5,6 +5,7 @@ require 'action_view/helpers/mustache_helper'
 require 'action_view/mustache'
 require 'action_view/mustache/generator'
 require 'mustache'
+require 'erb'
 
 module ActionView
   class Template
@@ -22,7 +23,7 @@ module ActionView
         # Returns String of Ruby code to be evaled.
         def self.call(template)
           # Use standard mustache parser to generate tokens
-          tokens = ::Mustache::Parser.new.compile(self.expand_t(template.source))
+          tokens = ::Mustache::Parser.new.compile(ERB.new(template.source).result)
 
           # Use custom generator to generate the compiled ruby
           src = ActionView::Mustache::Generator.new.compile(tokens)
@@ -30,14 +31,6 @@ module ActionView
           <<-RUBY
             ctx = mustache_view.context; ctx.push(local_assigns); #{src}
           RUBY
-        end
-
-        def self.expand_t(source)
-          source.gsub(/<%t([\s\S]+?)%>/) { |match|
-            term = $1.strip.split('-')
-            hash = !term[1].nil? ? eval(term[1]) : nil
-            I18n.t(term[0], hash)
-          }
         end
       end
     end
