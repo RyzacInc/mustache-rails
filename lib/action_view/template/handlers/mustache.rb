@@ -23,7 +23,7 @@ module ActionView
         # Returns String of Ruby code to be evaled.
         def self.call(template)
           # Use standard mustache parser to generate tokens
-          tokens = ::Mustache::Parser.new.compile(ERB.new(template.source).result)
+          tokens = ::Mustache::Parser.new.compile(::ERB.new(template.source).result)
 
           # Use custom generator to generate the compiled ruby
           src = ActionView::Mustache::Generator.new.compile(tokens)
